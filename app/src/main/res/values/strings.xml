@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Contatos</string>
+    <string name="todo">TODO</string>
+    <string name="nome">Nome</string>
+    <string name="Telefone" />
+    <string name="numero">Número</string>
+    <string name="email">E-mail</string>
+    <string name="obs">Observação</string>
+    <string name="time_add">Hora Adicionado</string>
+    <string name="time_update">Hora Atualizado</string>
+</resources>

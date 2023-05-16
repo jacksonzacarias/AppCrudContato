@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".MainActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contatoRView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/row_contato_item"
+
+
+
+
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <!--    botão para adicionar contato no aplicativo, (lindo por que so usei codigo nada de arrasta)-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:contentDescription="@string/todo"
+        android:elevation="@dimen/_5sdp"
+        android:src="@drawable/baseline_add_24"
+        app:backgroundTint="#0DA2CF"
+        app:pressedTranslationZ="@dimen/_10sdp"
+        app:tint="@color/white" />
+
+
+</RelativeLayout>
