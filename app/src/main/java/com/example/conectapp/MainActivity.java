@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddEditContato.class);
-                intent.putExtra("isEditMode", false);
+                intent.putExtra("modoDeEdicao", false);
                 startActivity(intent);
 
             }

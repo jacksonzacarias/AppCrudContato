@@ -32,7 +32,25 @@ public class DataBase extends SQLiteOpenHelper {
 
     }
 
-    public long insertContato(String foto, String nome, String numero, String email, String bio, String adicionadoTimeStamp, String atualizadoTimeStamp) {
+    public long insertContato(String imagem, String nome, String numero, String email, String bio, String adicionadoTimeStamp, String atualizadoTimeStamp) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constants.C_FOTO, imagem);
+        values.put(Constants.C_NOME, nome);
+        values.put(Constants.C_NUMERO, numero);
+        values.put(Constants.C_EMAIL, email);
+        values.put(Constants.C_BIO, bio);
+        values.put(Constants.C_ADICIONADO_TIMESTAMP, adicionadoTimeStamp);
+        values.put(Constants.C_ATUALIZADO_TIMESTAMP, atualizadoTimeStamp);
+
+        long id = db.insert(Constants.TABELA_NAME, null, values);
+        db.close();
+        return id;
+
+    }
+
+    public void updateContato(String id, String foto, String nome, String numero, String email, String bio, String adicionadoTimeStamp, String atualizadoTimeStamp) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -44,9 +62,8 @@ public class DataBase extends SQLiteOpenHelper {
         values.put(Constants.C_ADICIONADO_TIMESTAMP, adicionadoTimeStamp);
         values.put(Constants.C_ATUALIZADO_TIMESTAMP, atualizadoTimeStamp);
 
-        long id = db.insert(Constants.TABELA_NAME, null, values);
+        db.update(Constants.TABELA_NAME,values, Constants.C_ID + " = ?", new String[]{id});
         db.close();
-        return id;
 
     }
 

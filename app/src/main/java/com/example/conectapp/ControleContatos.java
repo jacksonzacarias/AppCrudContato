@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
 
 import java.util.ArrayList;
 
@@ -43,17 +46,17 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
         String id = modeloContato.getId();
         String nome = modeloContato.getNome();
         String numero = modeloContato.getNumero();
-        String foto = modeloContato.getFoto();
+        String imagem = modeloContato.getFoto();
         String email = modeloContato.getEmail();
         String bio = modeloContato.getBio();
         String adicionadoTimeStamp = modeloContato.getAdicionadoTimeStamp();
         String atualizadoTimeStamp = modeloContato.getAtualizadoTimeStamp();
 
         holder.contatoNome.setText(nome);
-        if (foto.equals("")){
+        if (imagem.equals("")){
             holder.contatoImage.setImageResource(R.drawable.baseline_perm_identity_24);
         }else {
-            holder.contatoImage.setImageURI(Uri.parse(foto));
+            holder.contatoImage.setImageURI(Uri.parse(imagem));
         }
 
         //handle click listener
@@ -64,7 +67,7 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetalheContato.class);
@@ -73,9 +76,26 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
             }
         });
 
+
+
         holder.contatoEdit.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void onClick(View v){
+                Intent intent = new Intent(context, AddEditContato.class);
+                intent.putExtra("ID", id);
+                intent.putExtra("NOME", nome);
+                intent.putExtra("NUMERO", numero);
+                intent.putExtra("IMAGEM", imagem);
+                intent.putExtra("E-MAIL", email);
+                intent.putExtra("BIO", bio);
+                intent.putExtra("ADICIONADO_EM", adicionadoTimeStamp);
+                intent.putExtra("ATUALIZADO_EM", atualizadoTimeStamp);
+
+                intent.putExtra("modoDeEdicao", true);
+
+                context.startActivity(intent);
+
+
                 Toast.makeText(context, "Editar", Toast.LENGTH_SHORT).show();
             }
         });
@@ -101,6 +121,7 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
 
         ImageView contatoImage, contatoDial;
         TextView contatoNome, contatoEdit, contatoDelete   ;
+        RelativeLayout relativeLayout;
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +131,7 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
             contatoNome = itemView.findViewById(R.id.contato_nome);
             contatoEdit = itemView.findViewById(R.id.contact_edit);
             contatoDelete = itemView.findViewById(R.id.contact_delete);
-
+            relativeLayout = itemView.findViewById(R.id.mainLayout);
         }
     }
 }

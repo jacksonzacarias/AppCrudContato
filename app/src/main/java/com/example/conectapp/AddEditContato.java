@@ -38,15 +38,19 @@ public class AddEditContato extends AppCompatActivity {
     private FloatingActionButton addButton;
 
     //   private ActionBar actionBar;
+    private boolean modoDeEdicao;
 //
 //
+
+
+    private ActionBar actionBar;
+
 //
-    String nome, numero, email, bio;
+    String nome, numero, email, bio, adicionadoTimeStamp, atualizadoTimeStamp, id, imagem;
     private static final int CAMERA_PERMISSAO_CODE = 100;
     private static final int STORAGE_PERMISSAO_CODE = 200;
     private static final int IMAGE_DA_GALERIA_CODE = 300;
     private static final int IMAGE_DA_CAMERA_CODE = 400;
-
 
     private String[] storagePermission;
 
@@ -54,8 +58,6 @@ public class AddEditContato extends AppCompatActivity {
     private String[] cameraPermissions;
 
     private Uri image_uri;
-
-    ActionBar actionBar;
 
     private DataBase dataBase;
 //
@@ -73,10 +75,12 @@ public class AddEditContato extends AppCompatActivity {
         storagePermission = new String[]{permission.WRITE_EXTERNAL_STORAGE};
 
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Adicionar Contato");
+//        actionBar.setTitle("Adicionar Contato");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 //
+
+
 //
 //// inicilizacao view
         fotoFile = findViewById(R.id.fotoFile);
@@ -86,6 +90,48 @@ public class AddEditContato extends AppCompatActivity {
         bioEt = findViewById(R.id.bioEt);
         addButton = findViewById(R.id.addButton);
 //
+////        // checando se o usuario esta editando ou adicionando
+        Intent intent = getIntent(); // pega a intenção
+        modoDeEdicao =   intent.getBooleanExtra("modoDeEdicao", false); // pega o valor booleano
+//       // se o usuario estiver editando
+        if (modoDeEdicao)
+        {
+            // atualizar
+            actionBar.setTitle("Atualizar Contato");
+
+             id = intent.getStringExtra("ID");
+            nome = intent.getStringExtra("NOME");
+            numero = intent.getStringExtra("NUMERO");
+            email = intent.getStringExtra("EMAIL");
+            bio = intent.getStringExtra("BIO");
+            imagem = intent.getStringExtra("IMAGEM");
+            adicionadoTimeStamp = intent.getStringExtra("ADICIONADO_EM");
+            atualizadoTimeStamp = intent.getStringExtra("ATUALIZADO_EM");
+
+            nomeEt.setText(nome);
+            numeroEt.setText(numero);
+            emailEt.setText(email);
+            bioEt.setText(bio);
+
+
+            image_uri = Uri.parse(imagem);
+
+            if (imagem.equals(""))
+            {
+                fotoFile.setImageResource(R.drawable.baseline_perm_identity_24);
+            }
+            else
+            {
+                fotoFile.setImageURI(image_uri);
+            }
+
+        }
+        else
+        {
+            // adicionar
+            actionBar.setTitle("Adicionar Contato");
+        }
+
 //        // Adicionando evento de clique no botão
 //
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -185,9 +231,26 @@ public class AddEditContato extends AppCompatActivity {
 
         String timeStamp = "" +System.currentTimeMillis();
 
+
         if (!nome.isEmpty() || !numero.isEmpty() || !email.isEmpty() || !bio.isEmpty()) {
             // salvar dados
+        if (modoDeEdicao) {
+            //editando
+            dataBase.updateContato(
 
+                    "" + id,
+                    "" + image_uri,
+                    "" + nome,
+                    "" + numero,
+                    "" + email,
+                    "" + bio,
+                    "" + timeStamp,
+                    "" + timeStamp
+
+            );
+            Toast.makeText(getApplicationContext(), "Contato atualizado com sucesso", Toast.LENGTH_SHORT).show();
+
+        }else {
        long id = dataBase.insertContato(
                ""+image_uri,
                ""+nome,
@@ -198,6 +261,9 @@ public class AddEditContato extends AppCompatActivity {
                ""+timeStamp
        );
          Toast.makeText(getApplicationContext(),  "Contato adicionado com sucesso"+id, Toast.LENGTH_SHORT).show();
+
+        }
+
 
         } else {
             Toast.makeText(getApplicationContext(), "Todos os campos são obrigatórios", Toast.LENGTH_SHORT).show();
