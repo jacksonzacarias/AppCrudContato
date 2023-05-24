@@ -21,14 +21,17 @@ import java.util.ArrayList;
 public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.ContactViewHolder>{
 
     private Context context;
-    private ArrayList<ModeloContato> contatoArrayList;
+    private ArrayList<ModeloContato> listContato;
+
+    private DataBase dataBase;
 
     //criando o construtor
 
 
-    public ControleContatos(Context context, ArrayList<ModeloContato> contatoArrayList) {
+    public ControleContatos(Context context, ArrayList<ModeloContato> listContato) {
         this.context = context;
-        this.contatoArrayList = contatoArrayList;
+        this.listContato = listContato;
+        dataBase = new DataBase(context);
     }
 
     @NonNull
@@ -41,7 +44,7 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        ModeloContato modeloContato = contatoArrayList.get(position);
+        ModeloContato modeloContato = listContato.get(position);
 
         String id = modeloContato.getId();
         String nome = modeloContato.getNome();
@@ -103,6 +106,10 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
         holder.contatoDelete.setOnClickListener(new View.OnClickListener(){
             @Override
             public  void onClick(View v){
+                dataBase.deleteContato(id);
+
+                ((MainActivity)context).onResume();
+
                 Toast.makeText(context, "Deletar", Toast.LENGTH_SHORT).show();
             }
         });
@@ -114,7 +121,7 @@ public class ControleContatos  extends  RecyclerView.Adapter<ControleContatos.Co
 
     @Override
     public int getItemCount() {
-        return contatoArrayList.size();
+        return listContato.size();
     }
 
     class ContactViewHolder extends RecyclerView.ViewHolder{

@@ -1,11 +1,16 @@
 package com.example.conectapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ControleContatos controleContatos;
 
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //inicializando o db
+
+        actionBar = getSupportActionBar();
 
         db = new DataBase(this);
 
@@ -61,5 +69,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         carregandoDados(); //atualiza os dados
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+
+        getMenuInflater().inflate(R.menu.top_main_delete, menu);
+
+        MenuItem item = menu.findItem(R.id.buscaContato);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                buscarContato(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscarContato(newText);
+                return false;
+            }
+        });
+        return true;
+
+
+    }
+
+    private void buscarContato(String query) {
+        controleContatos = new ControleContatos(this, db.getBuscaContato(query));
+        contatoRView.setAdapter(controleContatos);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.deleteAlldelete:
+                db.deleteAllContato();
+                onResume();
+                break;
+        }
+        return true;
     }
 }

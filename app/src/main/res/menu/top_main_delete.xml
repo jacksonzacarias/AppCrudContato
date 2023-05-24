@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+     <item
+          android:id="@+id/buscaContato"
+          android:title="Buscar"
+          android:icon="@drawable/baseline_search_24"
+          app:showAsAction="ifRoom"
+         app:actionViewClass="android.widget.SearchView" />
+     <item
+         android:id="@+id/deleteAlldelete"
+         android:icon="@drawable/baseline_delete_sweep_24"
+         android:title="Deletar"
+         android:visible="true"
+         android:orderInCategory="100"
+         app:showAsAction="always" />
+
+
+
+</menu>
